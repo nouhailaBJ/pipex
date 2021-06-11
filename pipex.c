@@ -1,127 +1,81 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include "libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/10 17:23:19 by nbjaghou          #+#    #+#             */
+/*   Updated: 2021/06/10 19:51:05 by nbjaghou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
-the parent process treats the first command, 
-write its output in the first pipe and create a child which will treat the second command
-and write its outputin the second pipe, meanwhile this child will create a sub-child 
-which will treat the third command.
-*/
-void	ft_pipe(char **s1, char **s2, int in, int out)
+#include "pipex.h"
+
+void	ft_free(char *tmp)
 {
-	int fd[2];
-	pid_t pid;
-	if (pipe(fd) != 0)
-		exit(EXIT_FAILURE);
-	if ((pid = fork()) == -1)
-		exit(EXIT_FAILURE);
-
-	if (pid == 0)
-	{
-		dup2(fd[1], 1);
-		dup2(in, 0);
-		close(fd[0]);
-		close(fd[1]);
-		execvp(s1[0], s1);
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		dup2(fd[0], 0);
-		dup2(out, 1);
-		close(fd[0]);
-		close(fd[1]);
-		execvp(s2[0], s2);
-		exit(EXIT_FAILURE);
-	}
+	free(tmp);
+	tmp = NULL;
 }
-/************* join_path ***********/
-char		*join_path(char const *s1, char const *s2)
-{
-	char	*str;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
-	if ((str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1)) == 0)
-		return (NULL);
-	while (s1[j] != '\0')
-	{
-		str[j] = s1[j];
-		j++;
-	}
-	str[j] = '/';
-	j++;
-	while (s2[i] != '\0')
-	{
-		str[j] = s2[i];
-		i++;
-		j++;
-	}
-	str[j] = '\0';
-	return (str);
-}
-/************* END join_path ***********/
-int search_command(char *str)
+int 	ft_not_found(char *cmd)
 {
-    char *path;
-    char **all_path;
-    struct stat stats;
-	int i;
-
-    if (!str)
-        return (0);
-	path = getenv("PATH");
-	all_path = ft_split(path, ':');
-	i = 0;
-	while (all_path[i])
-	{
-		path = join_path(all_path[i], str);
-		if (stat(path, &stats) == 0)
-		{
-			if (stats.st_mode & X_OK)
-				return (1);
-			else{
-				ft_putstr_fd("permisison denied\n", 1);
-            }
-		}
-		i++;
-	}
+	ft_putstr_fd("pipex: ", 1);
+	ft_putstr_fd(cmd, 1);
+	ft_putstr_fd(": command not found\n", 1);
 	return (0);
 }
-int main(int ac, char **av, char **envp)
+
+int 	check_errors(void)
 {
-    char  **s1;
-    char **s2;
-    int fd[2];
-    if (ac == 5)
-    {
-        s1 = ft_split(av[2], ' ');
-        s2 = ft_split(av[3], ' ');
-        if (search_command(s1[0]) == 0 || search_command(s2[0]) == 0)
-        {
-            ft_putstr_fd("Error : command not found \n", 1);
-            return (0);
-        }
-    	fd[0] = open(av[1], O_RDONLY); // input
-		fd[1] = open(av[4], O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
-        if (fd[0] < 0)
-        {
-            perror("pipex");
-            exit(EXIT_FAILURE);
-        }
-        if (fd[1] < 0)
-        {
-            perror("pipex");
-            exit(EXIT_FAILURE);
-        } 
-        ft_pipe(s1, s2, fd[0], fd[1]);
-    }else
-        ft_putstr_fd("Syntax : Error \n", 1);
-    return (0);
+	int	error;
+
+	error = 0;
+	if (g_data.inp < 0)
+	{
+		ft_putstr_fd("pipex: ", 1);
+		perror(g_data.file1);
+		error = 1;
+	}
+	if (g_data.out < 0)
+	{
+		ft_putstr_fd("pipex: ", 1);
+		perror(g_data.file2);
+		error = 1;
+	}
+	if (g_data.s1[0] && search_path(g_data.s1[0]) == 0 && !error)
+		ft_not_found(g_data.s1[0]);
+	if (g_data.s2[0] && search_path(g_data.s2[0]) == 0)
+		ft_not_found(g_data.s2[0]);
+	if (error)
+		exit(EXIT_FAILURE);
+	return (1);
+}
+
+void	stock_args(char **av)
+{
+	g_data.file1 = av[1];
+	g_data.file2 = av[4];
+	g_data.s1 = ft_split(av[2], ' ');
+	g_data.s2 = ft_split(av[3], ' ');
+	g_data.inp = open(av[1], O_RDONLY);
+	g_data.out = open(av[4], O_WRONLY | O_TRUNC | O_CREAT,
+			S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+}
+
+int 	main(int ac, char **av)
+{
+	if (ac == 5)
+	{
+		stock_args(av);
+		if (check_errors())
+		{
+			if (g_data.file1 && g_data.file2 && g_data.s1[0] && g_data.s2[0])
+				ft_pipe();
+			else
+				ft_putstr_fd("pipex: : command not found\n", 1);
+		}
+	}
+	else
+		ft_putstr_fd("Syntax Error: ./pipex file1 cmd1 cmd2 file2\n", 1);
 }

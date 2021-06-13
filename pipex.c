@@ -52,8 +52,26 @@ int 	check_errors(void)
 	return (1);
 }
 
-void	stock_args(char **av)
+void	ft_stock_env(char **envp)
 {
+	int i;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	g_data.envp = (char **)malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (envp[i])
+	{
+		g_data.envp[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	g_data.envp[i] = NULL;
+}
+
+void	stock_args(char **av, char **envp)
+{
+	ft_stock_env(envp);
 	g_data.file1 = av[1];
 	g_data.file2 = av[4];
 	g_data.s1 = ft_split(av[2], ' ');
@@ -63,11 +81,11 @@ void	stock_args(char **av)
 			S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
 }
 
-int 	main(int ac, char **av)
+int 	main(int ac, char **av, char **envp)
 {
 	if (ac == 5)
 	{
-		stock_args(av);
+		stock_args(av, envp);
 		if (check_errors())
 		{
 			if (g_data.file1 && g_data.file2 && g_data.s1[0] && g_data.s2[0])

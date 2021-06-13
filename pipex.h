@@ -27,6 +27,7 @@ typedef struct s_pipex
 	int		out;
 	int		fd[2];
 	pid_t	pid;
+	char	**envp;
 }			t_pipex;
 t_pipex	g_data;
 void	ft_pipe(void);
@@ -35,9 +36,10 @@ char	*join_path(char const *s1, char const *s2);
 int		search_path(char *line);
 int		ft_not_found(char *cmd);
 int		check_errors(void);
-void	stock_args(char **av);
+void	stock_args(char **av, char **envp);
 size_t	ft_strlen(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s);
 void	ft_putstr_fd(char *s, int fd);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 #endif

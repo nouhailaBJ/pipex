@@ -18,6 +18,7 @@ SRC =	ft_pipe.c \
 		pipex.c \
 		search_path.c \
 		utils.c \
+		ft_strncmp.c \
 
 OBJ = 	ft_pipe.o \
 		ft_split.o \
@@ -25,7 +26,7 @@ OBJ = 	ft_pipe.o \
 		pipex.o \
 		search_path.o \
 		utils.o \
-
+		ft_strncmp.o 	\
 
 FLAGS = -Wall -Wextra -Werror 
 

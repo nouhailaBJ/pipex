@@ -6,7 +6,7 @@
 /*   By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:19:23 by nbjaghou          #+#    #+#             */
-/*   Updated: 2021/06/10 17:59:04 by nbjaghou         ###   ########.fr       */
+/*   Updated: 2021/06/13 16:33:34 by nbjaghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,5 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s);
 void	ft_putstr_fd(char *s, int fd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+void	ft_stock_env(char **envp);
 #endif

@@ -6,7 +6,7 @@
 #    By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/10 17:30:50 by nbjaghou          #+#    #+#              #
-#    Updated: 2021/06/10 19:48:39 by nbjaghou         ###   ########.fr        #
+#    Updated: 2021/06/13 16:34:01 by nbjaghou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC =	ft_pipe.c \
 		search_path.c \
 		utils.c \
 		ft_strncmp.c \
+		ft_stock_env.c \
 
 OBJ = 	ft_pipe.o \
 		ft_split.o \
@@ -27,6 +28,7 @@ OBJ = 	ft_pipe.o \
 		search_path.o \
 		utils.o \
 		ft_strncmp.o 	\
+		ft_stock_env.o \
 
 FLAGS = -Wall -Wextra -Werror 
 

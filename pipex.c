@@ -6,7 +6,7 @@
 /*   By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:23:19 by nbjaghou          #+#    #+#             */
-/*   Updated: 2021/06/10 19:51:05 by nbjaghou         ###   ########.fr       */
+/*   Updated: 2021/06/14 15:16:58 by nbjaghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,31 +42,13 @@ int 	check_errors(void)
 		ft_putstr_fd("pipex: ", 1);
 		perror(g_data.file2);
 		error = 1;
+		exit(EXIT_FAILURE);
 	}
 	if (g_data.s1[0] && search_path(g_data.s1[0]) == 0 && !error)
 		ft_not_found(g_data.s1[0]);
 	if (g_data.s2[0] && search_path(g_data.s2[0]) == 0)
 		ft_not_found(g_data.s2[0]);
-	if (error)
-		exit(EXIT_FAILURE);
 	return (1);
-}
-
-void	ft_stock_env(char **envp)
-{
-	int i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	g_data.envp = (char **)malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (envp[i])
-	{
-		g_data.envp[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	g_data.envp[i] = NULL;
 }
 
 void	stock_args(char **av, char **envp)

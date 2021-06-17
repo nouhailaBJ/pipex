@@ -17,6 +17,8 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 typedef struct s_pipex
 {
 	char	**s1;
@@ -30,6 +32,7 @@ typedef struct s_pipex
 	char	**envp;
 }			t_pipex;
 t_pipex	g_data;
+int		g_ret;
 void	ft_pipe(void);
 char	**ft_split(char const *s, char c);
 char	*join_path(char const *s1, char const *s2);

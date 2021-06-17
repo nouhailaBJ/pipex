@@ -14,6 +14,8 @@
 
 void	ft_pipe(void)
 {
+	int status;
+
 	pipe(g_data.fd);
 	g_data.pid = fork();
 	if (g_data.pid == -1)
@@ -38,4 +40,9 @@ void	ft_pipe(void)
 	}
 	close(g_data.inp);
 	close(g_data.out);
+	waitpid(g_data.pid, &status, 0);
+	if (WIFEXITED(status))
+	{
+		g_ret = WEXITSTATUS(status);
+	}
 }

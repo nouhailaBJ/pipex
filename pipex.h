@@ -6,7 +6,7 @@
 /*   By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:19:23 by nbjaghou          #+#    #+#             */
-/*   Updated: 2021/06/13 16:33:34 by nbjaghou         ###   ########.fr       */
+/*   Updated: 2021/06/15 18:49:14 by nbjaghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_pipex	g_data;
 void	ft_pipe(void);
 char	**ft_split(char const *s, char c);
 char	*join_path(char const *s1, char const *s2);
-int		search_path(char *line);
+int		search_path(char *line, int nb);
 int		ft_not_found(char *cmd);
 int		check_errors(void);
 void	stock_args(char **av, char **envp);

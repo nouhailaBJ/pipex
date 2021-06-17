@@ -6,7 +6,7 @@
 /*   By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:23:19 by nbjaghou          #+#    #+#             */
-/*   Updated: 2021/06/14 15:16:58 by nbjaghou         ###   ########.fr       */
+/*   Updated: 2021/06/15 19:14:24 by nbjaghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int 	check_errors(void)
 		error = 1;
 		exit(EXIT_FAILURE);
 	}
-	if (g_data.s1[0] && search_path(g_data.s1[0]) == 0 && !error)
+	if (g_data.s1[0] && search_path(g_data.s1[0], 1) == 0 && !error)
 		ft_not_found(g_data.s1[0]);
-	if (g_data.s2[0] && search_path(g_data.s2[0]) == 0)
+	if (g_data.s2[0] && search_path(g_data.s2[0], 2) == 0)
 		ft_not_found(g_data.s2[0]);
 	return (1);
 }

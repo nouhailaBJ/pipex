@@ -6,14 +6,28 @@
 /*   By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 19:47:44 by nbjaghou          #+#    #+#             */
-/*   Updated: 2021/06/13 16:32:52 by nbjaghou         ###   ########.fr       */
+/*   Updated: 2021/06/15 19:02:19 by nbjaghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int 	search_path_helper(char *path, char **tbl, int i)
+int 	search_path_helper(char *path, char **tbl, int i, int nb)
 {
+	char	*tmp;
+
+	if (nb == 1)
+	{
+		tmp = g_data.s1[0];
+		g_data.s1[0] = ft_strdup(path);
+		free(tmp);
+	}
+	else
+	{
+		tmp = g_data.s2[0];
+		g_data.s2[0] = ft_strdup(path);
+		free(tmp);
+	}
 	while (tbl[i])
 	{
 		free(tbl[i]);
@@ -47,7 +61,7 @@ char	*ft_getenv(char *str)
 	return (NULL);
 }
 
-int 	search_path(char *line)
+int 	search_path(char *line, int nb)
 {
 	char		*path;
 	char		**all_path;
@@ -65,7 +79,7 @@ int 	search_path(char *line)
 		free(tmp);
 		fd = open(path, O_RDONLY);
 		if (fd > 1)
-			return (search_path_helper(path, all_path, i));
+			return (search_path_helper(path, all_path, i, nb));
 		free(all_path[i]);
 		i++;
 	}

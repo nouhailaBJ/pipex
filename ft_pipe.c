@@ -6,7 +6,7 @@
 /*   By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:23:56 by nbjaghou          #+#    #+#             */
-/*   Updated: 2021/06/10 17:25:34 by nbjaghou         ###   ########.fr       */
+/*   Updated: 2021/06/15 18:47:42 by nbjaghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_pipe(void)
 		dup2(g_data.inp, 0);
 		close(g_data.fd[0]);
 		close(g_data.fd[1]);
-		execvp(g_data.s1[0], g_data.s1);
+		execve(g_data.s1[0], g_data.s1, g_data.envp);
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -33,7 +33,7 @@ void	ft_pipe(void)
 		dup2(g_data.out, 1);
 		close(g_data.fd[0]);
 		close(g_data.fd[1]);
-		execvp(g_data.s2[0], g_data.s2);
+		execve(g_data.s2[0], g_data.s2, g_data.envp);
 		exit(EXIT_FAILURE);
 	}
 	close(g_data.inp);

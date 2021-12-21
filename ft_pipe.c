@@ -6,7 +6,7 @@
 /*   By: nbjaghou <nbjaghou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:23:56 by nbjaghou          #+#    #+#             */
-/*   Updated: 2021/06/15 18:47:42 by nbjaghou         ###   ########.fr       */
+/*   Updated: 2021/06/19 15:52:53 by nbjaghou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	ft_pipe(void)
 {
-	int status;
-
 	pipe(g_data.fd);
 	g_data.pid = fork();
 	if (g_data.pid == -1)
@@ -26,8 +24,8 @@ void	ft_pipe(void)
 		dup2(g_data.inp, 0);
 		close(g_data.fd[0]);
 		close(g_data.fd[1]);
-		execve(g_data.s1[0], g_data.s1, g_data.envp);
-		exit(EXIT_FAILURE);
+		if (g_data.inp > 0)
+			execve(g_data.s1[0], g_data.s1, g_data.envp);
 	}
 	else
 	{
@@ -36,13 +34,8 @@ void	ft_pipe(void)
 		close(g_data.fd[0]);
 		close(g_data.fd[1]);
 		execve(g_data.s2[0], g_data.s2, g_data.envp);
-		exit(EXIT_FAILURE);
 	}
 	close(g_data.inp);
 	close(g_data.out);
-	waitpid(g_data.pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		g_ret = WEXITSTATUS(status);
-	}
+	waitpid(g_data.pid, &g_data.status, 0);
 }
